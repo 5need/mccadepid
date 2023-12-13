@@ -34,10 +34,6 @@ app.get("/", (_req, res) => {
   res.render("index");
 });
 
-app.get("/", (_req, res) => {
-  res.render("index");
-});
-
 app.get("/update", async (_req, res) => {
   const proc = Bun.spawn(["bash", "-c", "cat test.csv | tail -n +2"], {
     cwd: "./",
@@ -48,17 +44,17 @@ app.get("/update", async (_req, res) => {
   data = data.filter((value) => value !== "");
   data = data.map((value) => value.split(","));
 
-  const data_time = data.map((_value, index) => index);
-  const data_temperature = data.map((value) => value[0]);
+  const data_time = data.map((value) => value[0]);
   const data_power = data.map((value) => value[1]);
-
-  // console.log(data_temperature);
+  const data_temperature = data.map((value) => value[2]);
+  const data_setpoint = data.map((value) => value[3]);
 
   res.render("chartupdate", {
     data: {
       time: data_time,
       temperature: data_temperature,
       power: data_power,
+      setpoint: data_setpoint,
     },
   });
 });
